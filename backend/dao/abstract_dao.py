@@ -3,13 +3,13 @@ import pymongo
 
 class DAO:
     def get_all(self) -> list:
-        return self.collection.find()
+        return list(self.collection.find({}, {"_id":0}))
 
     def find(self, name: str) -> dict:
         query = {"name": name}
         if self.collection.count_documents(query) == 0:
             return None
-        return self.collection.find_one(query)
+        return self.collection.find_one(query, {"_id":0})
 
     def update(self, name: str, new_vals: dict) -> bool:
         query = {"name": name}
