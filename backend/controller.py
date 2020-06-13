@@ -15,7 +15,7 @@ class Controller:
         return True, ""
 
     def set_trigger(self, name: str, trigger: dict) -> (bool, str):
-        if name != trigger["name"]:
+        if "name" in trigger and name != trigger["name"]:
             return False, "Invalid input"
         success = self.triggers.update(name, trigger)
         if not success:
@@ -44,7 +44,7 @@ class Controller:
         return True, ""
 
     def set_operation(self, name: str, operation: dict) -> (bool, str):
-        if name != operation["name"]:
+        if "name" in operation and name != operation["name"]:
             return False, "Invalid input"
         success = self.operations.update(name, operation)
         if not success:
@@ -73,7 +73,7 @@ class Controller:
         return True, ""
 
     def set_task(self, name: str, task: dict) -> (bool, str):
-        if name != task["name"]:
+        if "name" in task and name != task["name"]:
             return False, "Invalid input"
         success = self.tasks.update(name, task)
         if not success:
