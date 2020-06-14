@@ -16,6 +16,7 @@ class RegisterForm extends Component {
       error_message: '',
     };
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
+    this.formSubmitHandler = this.formSubmitHandler.bind(this);
   }
 
   inputChangeHandler(event) {
@@ -28,6 +29,16 @@ class RegisterForm extends Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  formSubmitHandler(event) {
+    event.preventDefault();
+    if (this.state.error_message !== '') {
+      this.setState({ error_message: '' });
+    }
+    console.log(this.state.username);
+    console.log(this.state.password);
+    // TODO: calling the register api
   }
 
   render() {
