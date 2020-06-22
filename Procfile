@@ -1,1 +1,1 @@
-web: python3 -m backend.main
+web: gunicorn wsgi:init
