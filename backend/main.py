@@ -200,7 +200,7 @@ def delete_task(name):
         return jsonify(response), '404 Not Found'
     return jsonify(response), '201 Created'
 
-def init():
+def init(*args, **kwargs):
     controller = Controller()
     app.run()
 
