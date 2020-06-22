@@ -200,12 +200,9 @@ def delete_task(name):
         return jsonify(response), '404 Not Found'
     return jsonify(response), '201 Created'
 
-def init(server_port: str):
+def init():
     controller = Controller()
-    app.run(port=server_port)
+    app.run()
 
 if __name__=='__main__':
-    server_port = '8080'
-    if len(sys.argv) > 1:
-        server_port = sys.argv[1]
-    init(server_port)
+    init()
