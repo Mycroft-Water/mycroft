@@ -205,7 +205,7 @@ def init(server_port: str):
     app.run(port=server_port)
 
 if __name__=='__main__':
-    server_port = '3000'
+    server_port = '8080'
     if len(sys.argv) > 1:
         server_port = sys.argv[1]
     init(server_port)
