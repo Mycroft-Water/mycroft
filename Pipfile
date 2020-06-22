@@ -11,6 +11,7 @@ gunicorn = "*"
 pymongo = "*"
 passlib = "*"
 flask-jwt-extended = "*"
+dnspython = "*"
 
 [requires]
 python_version = "3.7"
