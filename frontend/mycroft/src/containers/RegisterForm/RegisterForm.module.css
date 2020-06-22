@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap');
+
+.formWrapper {
+  height: 100%;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.formRegister {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.formRegister h1 {
+  font-family: 'Source Code Pro', monospace;
+}
+
+.formRegister .checkbox {
+  font-weight: 400;
+}
+.formRegister .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.formRegister .form-control:focus {
+  z-index: 2;
+}
+.formRegister input[type='text'] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.formRegister input[type='password'] {
+  margin-bottom: 15px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.formRegister button[type='submit'] {
+  margin-bottom: 10px;
+}
+
+.footer {
+  font-family: 'ZCOOL QingKe HuangYou', cursive;
+}
