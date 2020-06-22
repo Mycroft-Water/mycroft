@@ -6,7 +6,7 @@ from flask_jwt_extended import (
 import sys
 import secrets
 
-from controller import Controller
+from .controller import Controller
 
 app = Flask(__name__)
 #app.config['JWT_SECRET_KEY'] = secrets.token_hex(64)
@@ -200,10 +200,12 @@ def delete_task(name):
         return jsonify(response), '404 Not Found'
     return jsonify(response), '201 Created'
 
+def init(server_port: str):
+    controller = Controller()
+    app.run(port=server_port)
 
 if __name__=='__main__':
     server_port = '3000'
     if len(sys.argv) > 1:
         server_port = sys.argv[1]
-    controller = Controller()
-    app.run(port=server_port)
+    init(server_port)

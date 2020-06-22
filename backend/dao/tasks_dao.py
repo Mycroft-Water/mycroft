@@ -1,5 +1,5 @@
 import pymongo
-from dao.abstract_dao import DAO
+from .abstract_dao import DAO
 
 class TasksDAO(DAO):
     def __init__(self):
