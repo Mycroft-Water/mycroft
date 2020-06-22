@@ -13,6 +13,8 @@ app.config['JWT_SECRET_KEY'] = secrets.token_hex(64)
 #app.config['JWT_SECRET_KEY'] = '1F47888E377B236CDED0F48F57F42F529E28101C24D2D8D8449C996904E26A86'
 jwt = JWTManager(app)
 
+controller = Controller()
+
 @app.route('/api/register', methods=['POST'])
 def register():
     new_user = request.get_json(force=True, silent=False)
@@ -200,9 +202,5 @@ def delete_task(name):
         return jsonify(response), '404 Not Found'
     return jsonify(response), '201 Created'
 
-def init(*args, **kwargs):
-    controller = Controller()
-    app.run()
-
 if __name__=='__main__':
-    init()
+    app.run()
