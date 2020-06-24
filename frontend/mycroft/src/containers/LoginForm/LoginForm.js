@@ -34,15 +34,17 @@ class LoginForm extends Component {
 
   formSubmitHandler(event) {
     event.preventDefault();
+    const username = this.state.username;
+    const password = this.state.password;
     if (this.state.error_message !== '') {
       this.setState({ error_message: '' });
     }
     userApis
-      .login(this.state.username, this.state.password)
+      .login(username, password)
       .then((response) => {
-        console.log(response.data);
         localStorage.setItem('auth_token', response.data.access_token);
-        //TODO: Go to index page
+        localStorage.setItem('username', username);
+        this.props.history.push('/triggers');
       })
       .catch((error) => {
         this.setState({

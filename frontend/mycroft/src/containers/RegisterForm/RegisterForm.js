@@ -44,7 +44,8 @@ class RegisterForm extends Component {
       .then((response) => {
         userApis.login(username, password).then((response) => {
           localStorage.setItem('auth_token', response.data.access_token);
-          //TODO: Go to index page
+          localStorage.setItem('username', username);
+          this.props.history.push('/triggers');
         });
       })
       .catch((error) => {

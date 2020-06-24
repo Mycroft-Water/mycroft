@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import Aux from '../../hoc/Auxiliary/Auxiliary';
+import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 class Triggers extends Component {
   constructor(props) {
@@ -8,7 +10,11 @@ class Triggers extends Component {
   }
 
   render() {
-    return <div></div>;
+    return (
+      <Aux>
+        <NavigationBar />
+      </Aux>
+    );
   }
 }
 
