@@ -6,7 +6,7 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { withRouter } from 'react-router-dom';
-import userApis from '../../apis/user-apis'
+import userApis from '../../apis/user-apis';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -37,15 +37,19 @@ class LoginForm extends Component {
     if (this.state.error_message !== '') {
       this.setState({ error_message: '' });
     }
-    userApis.login(this.state.username, this.state.password).then((response)=>{
-      console.log(response.data);
-      localStorage.setItem('auth_token', response.data.access_token);
-      //TODO: Go to index page
-    }).catch((error)=>{
-      this.setState({
-        error_message: error.response.data.exception || 'Invalid Username or Password'
+    userApis
+      .login(this.state.username, this.state.password)
+      .then((response) => {
+        console.log(response.data);
+        localStorage.setItem('auth_token', response.data.access_token);
+        //TODO: Go to index page
       })
-    });
+      .catch((error) => {
+        this.setState({
+          error_message:
+            error.response.data.exception || 'Invalid Username or Password',
+        });
+      });
   }
 
   render() {
