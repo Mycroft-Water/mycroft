@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import userApis from '../../apis/user-apis'
 import { withRouter } from 'react-router-dom';
 
 class RegisterForm extends Component {
@@ -33,12 +34,21 @@ class RegisterForm extends Component {
 
   formSubmitHandler(event) {
     event.preventDefault();
+    const username = this.state.username;
+    const password = this.state.password;
     if (this.state.error_message !== '') {
       this.setState({ error_message: '' });
     }
-    console.log(this.state.username);
-    console.log(this.state.password);
-    // TODO: calling the register api
+    userApis.register(username, password).then((response)=>{
+      userApis.login(username, password).then((response)=>{
+        localStorage.setItem('auth_token', response.data.access_token)
+        //TODO: Go to index page
+      })
+    }).catch((error)=>{
+      this.setState({
+        error_message: error.response.data.exception || 'Invalid Username or Password'
+      })
+    });
   }
 
   render() {
