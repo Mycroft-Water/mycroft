@@ -16,7 +16,7 @@ class Triggers extends Component {
       <Aux>
         <NavigationBar />
         <Container>
-            <TriggerList />
+          <TriggerList />
         </Container>
       </Aux>
     );
