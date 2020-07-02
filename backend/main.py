@@ -8,13 +8,20 @@ import sys
 from flask_cors import CORS
 import secrets
 
-from controller import Controller
+from .controller import Controller
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_folder='../frontend/mycroft/build', static_url_path='/')
 CORS(app, support_credentials=True)
-#app.config['JWT_SECRET_KEY'] = secrets.token_hex(64)
-app.config['JWT_SECRET_KEY'] = '1F47888E377B236CDED0F48F57F42F529E28101C24D2D8D8449C996904E26A86'
+app.config['JWT_SECRET_KEY'] = secrets.token_hex(64)
+#app.config['JWT_SECRET_KEY'] = '1F47888E377B236CDED0F48F57F42F529E28101C24D2D8D8449C996904E26A86'
 jwt = JWTManager(app)
+
+controller = Controller()
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -203,10 +210,5 @@ def delete_task(name):
         return jsonify(response), '404 Not Found'
     return jsonify(response), '201 Created'
 
-
 if __name__=='__main__':
-    server_port = '3000'
-    if len(sys.argv) > 1:
-        server_port = sys.argv[1]
-    controller = Controller()
-    app.run(port=server_port)
+    app.run()
