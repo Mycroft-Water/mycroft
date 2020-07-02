@@ -8,7 +8,7 @@ import sys
 from flask_cors import CORS
 import secrets
 
-from .controller import Controller
+from controller import Controller
 
 
 app = Flask(__name__, static_folder='../frontend/mycroft/build', static_url_path='/')

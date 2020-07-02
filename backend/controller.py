@@ -1,10 +1,10 @@
 import sys
 from passlib.hash import pbkdf2_sha256
 
-from .dao.triggers_dao import TriggersDAO
-from .dao.operations_dao import OperationsDAO
-from .dao.tasks_dao import TasksDAO
-from .dao.users_dao import UsersDAO
+from dao.triggers_dao import TriggersDAO
+from dao.operations_dao import OperationsDAO
+from dao.tasks_dao import TasksDAO
+from dao.users_dao import UsersDAO
 
 class Controller:
     def validate_user(self, user: dict) -> (bool, str):
