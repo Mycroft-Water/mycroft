@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import Container from 'react-bootstrap/Container';
+import OperationList from './OperationList';
 
 class Operations extends Component {
   constructor(props) {
@@ -14,7 +15,9 @@ class Operations extends Component {
     return (
       <Aux>
         <NavigationBar />
-        <Container></Container>
+        <Container>
+          <OperationList />
+        </Container>
       </Aux>
     );
   }
