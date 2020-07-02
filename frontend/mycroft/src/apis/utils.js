@@ -1,5 +1,5 @@
 const withToken = (config, token) => {
-  return { ...config, headers: { Authorization: `Token ${token}` } };
+  return { ...config, headers: { Authorization: `Bearer ${token}` } };
 };
 
 const withParams = (config, params) => {
