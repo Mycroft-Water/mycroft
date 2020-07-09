@@ -3,15 +3,11 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
 )
-from dotenv import load_dotenv
 
 import sys
 from flask_cors import CORS
 import secrets
-
 from controller import Controller
-
-load_dotenv()
 
 app = Flask(__name__, static_folder='../frontend/mycroft/build', static_url_path='/')
 CORS(app, support_credentials=True)
