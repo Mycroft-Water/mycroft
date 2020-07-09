@@ -11,6 +11,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
+        <Route path="/" exact>
+          <LoginForm />
+        </Route>
         <Route path="/login">
           <LoginForm />
         </Route>
