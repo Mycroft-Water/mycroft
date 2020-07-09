@@ -5,7 +5,7 @@ from flask_jwt_extended import (
 )
 
 import secrets
-from controller import Controller
+from .controller import Controller
 
 app = Flask(__name__, static_folder='../frontend/mycroft/build', static_url_path='/')
 app.config['JWT_SECRET_KEY'] = secrets.token_hex(64)
