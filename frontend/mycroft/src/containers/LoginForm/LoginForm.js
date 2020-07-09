@@ -6,6 +6,7 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { withRouter } from 'react-router-dom';
+import userApis from '../../apis/user-apis';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -33,12 +34,24 @@ class LoginForm extends Component {
 
   formSubmitHandler(event) {
     event.preventDefault();
+    const username = this.state.username;
+    const password = this.state.password;
     if (this.state.error_message !== '') {
       this.setState({ error_message: '' });
     }
-    console.log(this.state.username);
-    console.log(this.state.password);
-    // TODO: calling the register api
+    userApis
+      .login(username, password)
+      .then((response) => {
+        localStorage.setItem('auth_token', response.data.access_token);
+        localStorage.setItem('username', username);
+        this.props.history.push('/triggers');
+      })
+      .catch((error) => {
+        this.setState({
+          error_message:
+            error.response.data.exception || 'Invalid Username or Password',
+        });
+      });
   }
 
   render() {

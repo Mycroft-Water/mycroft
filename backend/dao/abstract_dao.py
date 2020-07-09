@@ -35,6 +35,7 @@ class DAO:
         return True
 
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb+srv://%s:%s@cluster0-wkcgm.mongodb.net/mycroft?retryWrites=true&w=majority" 
+        # self.client = pymongo.MongoClient("mongodb://localhost:27017/")
+        self.client = pymongo.MongoClient("mongodb+srv://%s:%s@cluster0-wkcgm.mongodb.net/mycroft?retryWrites=true&w=majority"
             % (os.environ['MONGO_USERNAME'], os.environ['MONGO_PASSWORD']))
         self.database = self.client["mycroft"]
