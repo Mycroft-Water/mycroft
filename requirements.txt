@@ -3,3 +3,4 @@ flask_jwt_extended
 pymongo
 passlib
 dnspython
+python-dotenv
