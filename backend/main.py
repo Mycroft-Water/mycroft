@@ -8,8 +8,8 @@ import secrets
 from .controller import Controller
 
 app = Flask(__name__, static_folder='../frontend/mycroft/build', static_url_path='/')
-app.config['JWT_SECRET_KEY'] = secrets.token_hex(64)
-#app.config['JWT_SECRET_KEY'] = '1F47888E377B236CDED0F48F57F42F529E28101C24D2D8D8449C996904E26A86'
+# app.config['JWT_SECRET_KEY'] = secrets.token_hex(64)
+app.config['JWT_SECRET_KEY'] = '1F47888E377B236CDED0F48F57F42F529E28101C24D2D8D8449C996904E26A86'
 jwt = JWTManager(app)
 
 controller = Controller()
