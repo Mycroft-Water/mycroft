@@ -45,7 +45,11 @@ class OperationList extends Component {
     const operation_name =
       event.target.parentElement.parentElement.children[1].innerHTML;
     operationApis.deleteOperation(operation_name).then((response) => {
-      window.location.reload();
+      operationApis.fetchOperations().then((response) => {
+        this.setState({
+          operations: response.data.operations,
+        });
+      });
     });
   }
 
@@ -64,7 +68,11 @@ class OperationList extends Component {
     };
 
     operationApis.addOperation(operation_document).then((response) => {
-      window.location.reload();
+      operationApis.fetchOperations().then((response) => {
+        this.setState({
+          operations: response.data.operations,
+        });
+      });
     });
   }
 

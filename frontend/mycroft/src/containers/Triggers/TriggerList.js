@@ -73,7 +73,11 @@ class TriggerList extends Component {
       ...other_fields,
     };
     triggerApis.addTrigger(trigger_document).then((response) => {
-      window.location.reload();
+      triggerApis.fetchTriggers().then((response) => {
+        this.setState({
+          triggers: response.data.triggers,
+        });
+      });
     });
   }
 
@@ -81,7 +85,11 @@ class TriggerList extends Component {
     const trigger_name =
       event.target.parentElement.parentElement.children[1].innerHTML;
     triggerApis.deleteTrigger(trigger_name).then((response) => {
-      window.location.reload();
+      triggerApis.fetchTriggers().then((response) => {
+        this.setState({
+          triggers: response.data.triggers,
+        });
+      });
     });
   }
 
