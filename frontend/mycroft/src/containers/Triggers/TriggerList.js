@@ -40,7 +40,7 @@ class TriggerList extends Component {
     });
   }
 
-  getOtherFields() {
+  getFormOtherFields() {
     switch (this.state.new_trigger_type) {
       case 'Schedule':
       return (
@@ -72,18 +72,22 @@ class TriggerList extends Component {
       );
       break;
     }
-
     return null;
+  }
+
+  getDocumentOtherFields(trigger_type) {
+    switch (trigger_type) {
+      case 'Schedule':
+        return { time: this.state.new_trigger_schedule_time, repeat: this.state.new_trigger_schedule_repeat.toLowerCase() };
+        break;
+    }
   }
 
   formSubmitHandler(event) {
     event.preventDefault();
     const trigger_name = this.state.new_trigger_name;
     const trigger_type = this.state.new_trigger_type;
-    let other_fields = {};
-    if (trigger_type === 'Schedule') {
-      other_fields = { time: this.state.new_trigger_schedule_time, repeat: this.state.new_trigger_schedule_repeat.toLowerCase() };
-    }
+    const other_fields = this.getDocumentOtherFields(trigger_type);
     let trigger_document = {
       name: trigger_name,
       type: trigger_type.toLowerCase(),
@@ -125,7 +129,7 @@ class TriggerList extends Component {
         </tr>
       );
     });
-    let other_fields = this.getOtherFields();
+    let other_fields = this.getFormOtherFields();
     return (
       <div className="pt-3">
         <h4>Trigger List</h4>

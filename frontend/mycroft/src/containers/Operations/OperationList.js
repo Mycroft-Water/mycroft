@@ -57,13 +57,10 @@ class OperationList extends Component {
     event.preventDefault();
     const operation_name = this.state.new_operation_name;
     const operation_type = this.state.new_operation_type;
-    let other_fields = {};
-    if (operation_type === 'Zoom') {
-      other_fields = { link: this.state.new_operation_zoom_link };
-    }
+    const other_fields = this.getDocumentOtherFields(operation_type);
     let operation_document = {
       name: operation_name,
-      type: operation_type,
+      type: operation_type.toLowerCase(),
       ...other_fields,
     };
 
@@ -76,22 +73,32 @@ class OperationList extends Component {
     });
   }
 
-  getOtherFields() {
-    if (this.state.new_operation_type === 'Zoom') {
-      return (
-        <Aux>
-          <Form.Label htmlFor="operation-zoom-link" className="pt-4">
-            Link
-          </Form.Label>
-          <Form.Control
-            type="text"
-            id="operation-zoom-link"
-            name="new_operation_zoom_link"
-            value={this.state.new_operation_zoom_link}
-            onChange={this.inputChangeHandler}
-          />
-        </Aux>
-      );
+  getFormOtherFields() {
+    switch (this.state.new_operation_type) {
+      case "Zoom":
+        return (
+            <Aux>
+              <Form.Label htmlFor="operation-zoom-link" className="pt-4">
+                Link
+              </Form.Label>
+              <Form.Control
+                  type="text"
+                  id="operation-zoom-link"
+                  name="new_operation_zoom_link"
+                  value={this.state.new_operation_zoom_link}
+                  onChange={this.inputChangeHandler}
+              />
+            </Aux>
+        );
+        break;
+    }
+  }
+
+  getDocumentOtherFields(operation_type) {
+    switch (operation_type) {
+      case 'Zoom':
+        return { link: this.state.new_operation_zoom_link };
+        break;
     }
   }
 
@@ -101,7 +108,7 @@ class OperationList extends Component {
         <tr key={'operation_row_' + index}>
           <td>{index + 1}</td>
           <td>{operation.name}</td>
-          <td>{operation.type}</td>
+          <td>{operation.type.charAt(0).toUpperCase() + operation.type.slice(1)}</td>
           <td>
             <Button size="sm" onClick={this.operationDeleteClickHandler}>
               Delete
@@ -111,7 +118,7 @@ class OperationList extends Component {
       );
     });
 
-    let other_fields = this.getOtherFields();
+    let other_fields = this.getFormOtherFields();
 
     return (
       <div className="pt-3">
