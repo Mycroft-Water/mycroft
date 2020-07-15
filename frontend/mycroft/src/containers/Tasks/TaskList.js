@@ -12,9 +12,11 @@ class TaskList extends Component {
     this.taskTableHeaders = ['#', 'Name', 'Actions'];
     this.state = {
       tasks: [],
-      new_task_triggers: [],
       new_task_name: '',
+      new_task_triggers: [],
       new_task_operations: {},
+      new_task_triggers_str: '[]',
+      new_task_operations_str: '{}',
     };
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
     this.formSubmitHandler = this.formSubmitHandler.bind(this);
@@ -39,8 +41,8 @@ class TaskList extends Component {
   formSubmitHandler(event) {
     event.preventDefault();
     const task_name = this.state.new_task_name;
-    const task_triggers = this.state.new_task_triggers;
-    const task_operations = this.state.new_task_operations;
+    const task_triggers = JSON.parse(this.state.new_task_triggers_str);
+    const task_operations = JSON.parse(this.state.new_task_operations_str);
     let task_document = {
       name: task_name,
       triggers: task_triggers,
@@ -109,20 +111,20 @@ class TaskList extends Component {
             <Form.Control
               type="text"
               id="task-triggers"
-              name="new_task_triggers"
+              name="new_task_triggers_str"
               placeholder="Task Triggers"
               required
-              value={JSON.stringify(this.state.new_task_triggers)}
+              value={this.state.new_task_triggers_str}
               onChange={this.inputChangeHandler}
             />
             <Form.Label htmlFor="task-operations">Operations</Form.Label>
             <Form.Control
               type="text"
               id="task-operations"
-              name="new_task_operations"
+              name="new_task_operations_str"
               placeholder="Task Operations"
               required
-              value={JSON.stringify(this.state.new_task_operations)}
+              value={this.state.new_task_operations_str}
               onChange={this.inputChangeHandler}
             />
           </Form.Group>
