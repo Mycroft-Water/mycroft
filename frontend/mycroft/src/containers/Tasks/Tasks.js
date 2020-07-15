@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
+import Container from 'react-bootstrap/Container';
+import TaskList from './TaskList';
 
 class Tasks extends Component {
   constructor(props) {
@@ -13,6 +15,9 @@ class Tasks extends Component {
     return (
       <Aux>
         <NavigationBar />
+        <Container>
+          <TaskList />
+        </Container>
       </Aux>
     );
   }

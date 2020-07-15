@@ -75,20 +75,20 @@ class OperationList extends Component {
 
   getFormOtherFields() {
     switch (this.state.new_operation_type) {
-      case "Zoom":
+      case 'Zoom':
         return (
-            <Aux>
-              <Form.Label htmlFor="operation-zoom-link" className="pt-4">
-                Link
-              </Form.Label>
-              <Form.Control
-                  type="text"
-                  id="operation-zoom-link"
-                  name="new_operation_zoom_link"
-                  value={this.state.new_operation_zoom_link}
-                  onChange={this.inputChangeHandler}
-              />
-            </Aux>
+          <Aux>
+            <Form.Label htmlFor="operation-zoom-link" className="pt-4">
+              Link
+            </Form.Label>
+            <Form.Control
+              type="text"
+              id="operation-zoom-link"
+              name="new_operation_zoom_link"
+              value={this.state.new_operation_zoom_link}
+              onChange={this.inputChangeHandler}
+            />
+          </Aux>
         );
         break;
     }
@@ -108,7 +108,9 @@ class OperationList extends Component {
         <tr key={'operation_row_' + index}>
           <td>{index + 1}</td>
           <td>{operation.name}</td>
-          <td>{operation.type.charAt(0).toUpperCase() + operation.type.slice(1)}</td>
+          <td>
+            {operation.type.charAt(0).toUpperCase() + operation.type.slice(1)}
+          </td>
           <td>
             <Button size="sm" onClick={this.operationDeleteClickHandler}>
               Delete
