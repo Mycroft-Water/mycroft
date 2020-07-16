@@ -60,8 +60,6 @@ class OperationList extends Component {
     let other_fields = {};
     if (operation_type === 'Zoom') {
       other_fields = { link: this.state.new_operation_zoom_link };
-    } else if(operation_type === 'Open Slides') {
-      other_fields = { path: this.state.new_operation_slides_path };
     }
     let operation_document = {
       name: operation_name,
@@ -94,21 +92,6 @@ class OperationList extends Component {
           />
         </Aux>
       );
-    } else if (this.state.new_operation_type === 'Open Slides') {
-      return (
-        <Aux>
-          <Form.Label htmlFor="operation-slides-path" className="pt-4">
-            Path to file
-          </Form.Label>
-          <Form.Control
-            type="text"
-            id="operation-slides-path"
-            name="new_operation_slides_path"
-            value={this.state.new_operation_slides_path}
-            onChange={this.inputChangeHandler}
-          />
-        </Aux>
-      )
     }
   }
 
@@ -171,7 +154,6 @@ class OperationList extends Component {
               onChange={this.inputChangeHandler}
             >
               <option>Zoom</option>
-              <option>Open Slides</option>
             </Form.Control>
             {other_fields}
           </Form.Group>

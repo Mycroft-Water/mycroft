@@ -14,9 +14,8 @@ jwt = JWTManager(app)
 
 controller = Controller()
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path>')
-def index(path):
+@app.route('/')
+def index():
     return app.send_static_file('index.html')
 
 @app.route('/api/register', methods=['POST'])
