@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import taskApis from '../../apis/task-apis';
+import triggerApis from '../../apis/trigger-apis';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
@@ -12,15 +13,18 @@ class TaskList extends Component {
     this.taskTableHeaders = ['#', 'Name', 'Actions'];
     this.state = {
       tasks: [],
+      triggers: [],
       new_task_name: '',
       new_task_triggers: [],
       new_task_operations: {},
       new_task_triggers_str: '[]',
       new_task_operations_str: '{}',
+      new_task_new_trigger: '',
     };
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
     this.formSubmitHandler = this.formSubmitHandler.bind(this);
     this.taskDeleteClickHandler = this.taskDeleteClickHandler.bind(this);
+    this.addTriggerClickHandler = this.addTriggerClickHandler.bind(this);
   }
 
   inputChangeHandler(event) {
@@ -36,12 +40,15 @@ class TaskList extends Component {
     taskApis.fetchTasks().then((response) => {
       this.setState({ tasks: response.data.tasks });
     });
+    triggerApis.fetchTriggers().then((response) => {
+      this.setState({ triggers: response.data.triggers });
+    });
   }
 
   formSubmitHandler(event) {
     event.preventDefault();
     const task_name = this.state.new_task_name;
-    const task_triggers = JSON.parse(this.state.new_task_triggers_str);
+    const task_triggers = this.state.new_task_triggers;
     const task_operations = JSON.parse(this.state.new_task_operations_str);
     let task_document = {
       name: task_name,
@@ -65,6 +72,15 @@ class TaskList extends Component {
     });
   }
 
+  addTriggerClickHandler(event) {
+    const trigger_name = event.target.parentElement.children[2].value;
+    if (trigger_name !== '') {
+      this.setState({
+        new_task_triggers: [...this.state.new_task_triggers, trigger_name],
+      });
+    }
+  }
+
   render() {
     let task_rows = this.state.tasks.map((task, index) => {
       return (
@@ -77,6 +93,13 @@ class TaskList extends Component {
             </Button>
           </td>
         </tr>
+      );
+    });
+    let trigger_options = this.state.triggers.map((trigger, index) => {
+      return (
+        <option value={trigger.name} key={'trigger_option_' + index}>
+          {trigger.name}
+        </option>
       );
     });
     return (
@@ -107,6 +130,8 @@ class TaskList extends Component {
               value={this.state.new_task_name}
               onChange={this.inputChangeHandler}
             />
+          </Form.Group>
+          <Form.Group as={Row} controlId="formTaskTriggers">
             <Form.Label htmlFor="task_triggers">Triggers</Form.Label>
             <Form.Control
               type="text"
@@ -114,9 +139,30 @@ class TaskList extends Component {
               name="new_task_triggers_str"
               placeholder="Task Triggers"
               required
-              value={this.state.new_task_triggers_str}
-              onChange={this.inputChangeHandler}
+              readOnly
+              value={JSON.stringify(this.state.new_task_triggers)}
             />
+            <Form.Control
+              as="select"
+              id="new-task-new_trigger"
+              name="new_task_new_trigger"
+              value={this.state.new_task_new_trigger}
+              className="mt-3"
+              onChange={this.inputChangeHandler}
+            >
+              <option value=""> Choose a new trigger......</option>
+              {trigger_options}
+            </Form.Control>
+            <Button
+              type="button"
+              size="sm"
+              className="mt-3"
+              onClick={this.addTriggerClickHandler}
+            >
+              Add a new trigger
+            </Button>
+          </Form.Group>
+          <Form.Group as={Row} controlId="formTaskOperations">
             <Form.Label htmlFor="task-operations">Operations</Form.Label>
             <Form.Control
               type="text"
