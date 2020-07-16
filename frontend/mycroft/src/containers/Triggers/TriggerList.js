@@ -16,6 +16,7 @@ class TriggerList extends Component {
       new_trigger_name: '',
       new_trigger_type: 'Schedule',
       new_trigger_schedule_time: '00:00',
+      new_trigger_schedule_repeat: 'day',
     };
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
     this.formSubmitHandler = this.formSubmitHandler.bind(this);
@@ -39,37 +40,60 @@ class TriggerList extends Component {
     });
   }
 
-  getOtherFields() {
-    if (this.state.new_trigger_type === 'Schedule') {
-      return (
-        <Aux>
-          <Form.Label htmlFor="trigger-schedule-time" className="pt-4">
-            Time
-          </Form.Label>
-          <Form.Control
-            type="time"
-            id="trigger-schedule-time"
-            name="new_trigger_schedule_time"
-            value={this.state.new_trigger_schedule_time}
-            onChange={this.inputChangeHandler}
-          />
-        </Aux>
-      );
+  getFormOtherFields() {
+    switch (this.state.new_trigger_type) {
+      case 'Schedule':
+        return (
+          <Aux>
+            <Form.Label htmlFor="trigger-schedule-time" className="pt-4">
+              Time
+            </Form.Label>
+            <Form.Control
+              type="time"
+              id="trigger-schedule-time"
+              name="new_trigger_schedule_time"
+              value={this.state.new_trigger_schedule_time}
+              onChange={this.inputChangeHandler}
+            />
+            <Form.Label htmlFor="trigger-schedule-repeat" className="pt-4">
+              Repeat
+            </Form.Label>
+            <Form.Control
+              as="select"
+              id="trigger-schedule-repeat"
+              name="new_trigger_schedule_repeat"
+              value={this.state.new_trigger_schedule_repeat}
+              onChange={this.inputChangeHandler}
+            >
+              <option>Day</option>
+              <option>Week</option>
+            </Form.Control>
+          </Aux>
+        );
+        break;
     }
     return null;
+  }
+
+  getDocumentOtherFields(trigger_type) {
+    switch (trigger_type) {
+      case 'Schedule':
+        return {
+          time: this.state.new_trigger_schedule_time,
+          repeat: this.state.new_trigger_schedule_repeat.toLowerCase(),
+        };
+        break;
+    }
   }
 
   formSubmitHandler(event) {
     event.preventDefault();
     const trigger_name = this.state.new_trigger_name;
     const trigger_type = this.state.new_trigger_type;
-    let other_fields = {};
-    if (trigger_type === 'Schedule') {
-      other_fields = { time: this.state.new_trigger_schedule_time };
-    }
+    const other_fields = this.getDocumentOtherFields(trigger_type);
     let trigger_document = {
       name: trigger_name,
-      type: trigger_type,
+      type: trigger_type.toLowerCase(),
       ...other_fields,
     };
     triggerApis.addTrigger(trigger_document).then((response) => {
@@ -99,7 +123,9 @@ class TriggerList extends Component {
         <tr key={'trigger_row_' + index}>
           <td>{index + 1}</td>
           <td>{trigger.name}</td>
-          <td>{trigger.type}</td>
+          <td>
+            {trigger.type.charAt(0).toUpperCase() + trigger.type.slice(1)}
+          </td>
           <td>
             <Button size="sm" onClick={this.triggerDeleteClickHandler}>
               Delete
@@ -108,7 +134,7 @@ class TriggerList extends Component {
         </tr>
       );
     });
-    let other_fields = this.getOtherFields();
+    let other_fields = this.getFormOtherFields();
     return (
       <div className="pt-3">
         <h4>Trigger List</h4>

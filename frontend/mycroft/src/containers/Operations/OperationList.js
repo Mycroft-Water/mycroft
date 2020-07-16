@@ -60,12 +60,12 @@ class OperationList extends Component {
     let other_fields = {};
     if (operation_type === 'Zoom') {
       other_fields = { link: this.state.new_operation_zoom_link };
-    } else if(operation_type === 'Open Slides') {
+    } else if (operation_type === 'Open Slides') {
       other_fields = { path: this.state.new_operation_slides_path };
     }
     let operation_document = {
       name: operation_name,
-      type: operation_type,
+      type: operation_type.toLowerCase(),
       ...other_fields,
     };
 
@@ -108,7 +108,7 @@ class OperationList extends Component {
             onChange={this.inputChangeHandler}
           />
         </Aux>
-      )
+      );
     }
   }
 
@@ -118,7 +118,9 @@ class OperationList extends Component {
         <tr key={'operation_row_' + index}>
           <td>{index + 1}</td>
           <td>{operation.name}</td>
-          <td>{operation.type}</td>
+          <td>
+            {operation.type.charAt(0).toUpperCase() + operation.type.slice(1)}
+          </td>
           <td>
             <Button size="sm" onClick={this.operationDeleteClickHandler}>
               Delete
