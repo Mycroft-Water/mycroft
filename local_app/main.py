@@ -1,9 +1,8 @@
-import os
 import requests
 import json
 
-from trigger import Trigger, ScheduleTrigger
-from operation import Operation, StartZoomLink
+from trigger import ScheduleTrigger
+from operation import StartZoomLink
 from task import Task
 
 
@@ -64,19 +63,7 @@ class Main:
         for task in tasks_dict:
             if "triggers" not in task or "operations" not in task:
                 continue
-            print(self.triggers)
-            print(self.operations)
             new_task = Task(task, self.triggers, self.operations)
-            # for trigger_name in task["triggers"]:
-            #     for tgr in self.triggers:
-            #         if tgr.name == trigger_name:
-            #             tgr.subscribe(new_task)
-            #             break
-            # for operation_name in task["operations"]:
-            #     for op in self.operations:
-            #         if op.name == operation_name:
-            #             new_task.add_operation(op)
-            #             break
             self.tasks.append(new_task)
         return True
 
@@ -93,11 +80,11 @@ class Main:
         self.get_operations()
         self.tasks = []
         self.get_tasks()
-        # if not self.tasks or not self.operations or not self.tasks:
-        #     return
-        # for t in self.triggers:
-        #     t.listen()
-        # print("Triggers started listening")
+        if not self.tasks or not self.operations or not self.tasks:
+            return
+        for t in self.triggers.values():
+            t.listen()
+        print("Triggers started listening")
 
 
 if __name__ == "__main__":
