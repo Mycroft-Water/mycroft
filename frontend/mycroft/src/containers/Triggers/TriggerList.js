@@ -17,9 +17,13 @@ class TriggerList extends Component {
       new_trigger_type: 'Schedule',
       new_trigger_schedule_time: '00:00',
       new_trigger_schedule_repeat: 'day',
+      new_trigger_other_keys: [''],
+      new_trigger_other_values: [''],
+      new_trigger_custom_type: '',
     };
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
     this.formSubmitHandler = this.formSubmitHandler.bind(this);
+    this.addFieldClickHandler = this.addFieldClickHandler.bind(this);
     this.triggerDeleteClickHandler = this.triggerDeleteClickHandler.bind(this);
   }
 
@@ -27,6 +31,39 @@ class TriggerList extends Component {
     const target = event.target;
     const name = target.name;
     const value = target.value;
+    if(this.state.new_trigger_type === 'Custom') {
+      const id = target.id;
+      console.log("updating" + id);
+      if(name === "new_trigger_key") {
+        this.setState(state => {
+          const new_trigger_other_keys = state.new_trigger_other_keys.map((item, index) => {
+            if (index === parseInt(id, 10) - 1) {
+              return value;
+            } else {
+              return item;
+            }
+          });
+     
+          return {
+            new_trigger_other_keys,
+          };
+        });
+      } else {
+        this.setState(state => {
+          const new_trigger_other_values = state.new_trigger_other_values.map((item, index) => {
+            if (index === parseInt(id, 10) - 1) {
+              return value;
+            } else {
+              return item;
+            }
+          });
+     
+          return {
+            new_trigger_other_values,
+          };
+        });
+      }
+    }
     this.setState({
       [name]: value,
     });
@@ -71,6 +108,58 @@ class TriggerList extends Component {
           </Aux>
         );
         break;
+      case 'Custom':
+        return (
+          <Aux>
+            <Form.Control
+              type="text"
+              id="trigger-custom-type"
+              name="new_trigger_custom_type"
+              value={this.state.new_trigger_custom_type}
+              placeholder="Type"
+              onChange={this.inputChangeHandler}
+            />
+            <Form.Label htmlFor="trigger-slides-path" className="pt-4" id="others-label">
+              Attributes / Values
+            </Form.Label>
+            <div id="trigger-others-key-box">
+            {this.state.new_trigger_other_keys.map((key, index) => {
+              return (
+                <Aux>
+                  <Form.Control
+                    type="text"
+                    id={index + 1}
+                    name="new_trigger_key"
+                    value={key}
+                    placeholder="Attirbute Name"
+                    onChange={this.inputChangeHandler}
+                  />
+                </Aux>
+              );
+            })}
+            </div>
+            <div id="trigger-others-value-box">
+            {this.state.new_trigger_other_values.map((value, index) => {
+              return (
+                <Aux>
+                  <Form.Control
+                    type="text"
+                    id={index + 1}
+                    name="new_trigger_value"
+                    value={value}
+                    placeholder="Value"
+                    onChange={this.inputChangeHandler}
+                  />
+                </Aux>
+              );
+            })}
+            </div>
+            <button type="button" size="sm" onClick={this.addFieldClickHandler}>
+              Add
+            </button>
+          </Aux>
+        );
+        break;
     }
     return null;
   }
@@ -83,13 +172,20 @@ class TriggerList extends Component {
           repeat: this.state.new_trigger_schedule_repeat.toLowerCase(),
         };
         break;
+      default:
+        let other_fields = {};
+        for(var i = 0; i < this.state.new_trigger_other_keys.length; i++) {
+          other_fields[this.state.new_trigger_other_keys[i]] = this.state.new_trigger_other_values[i];
+        }
+        return other_fields;
     }
   }
 
   formSubmitHandler(event) {
     event.preventDefault();
     const trigger_name = this.state.new_trigger_name;
-    const trigger_type = this.state.new_trigger_type;
+    const trigger_type = this.state.new_trigger_type === 'Custom' ? 
+      this.state.new_trigger_custom_type : this.state.new_trigger_type;
     const other_fields = this.getDocumentOtherFields(trigger_type);
     let trigger_document = {
       name: trigger_name,
@@ -114,6 +210,18 @@ class TriggerList extends Component {
           triggers: response.data.triggers,
         });
       });
+    });
+  }
+
+  addFieldClickHandler(event) {
+    this.setState(state => {
+      const new_trigger_other_keys = state.new_trigger_other_keys.concat("");
+      const new_trigger_other_values = state.new_trigger_other_values.concat("");
+ 
+      return {
+        new_trigger_other_keys,
+        new_trigger_other_values,
+      };
     });
   }
 
@@ -176,6 +284,7 @@ class TriggerList extends Component {
               onChange={this.inputChangeHandler}
             >
               <option>Schedule</option>
+              <option>Custom</option>
             </Form.Control>
             {other_fields}
           </Form.Group>
