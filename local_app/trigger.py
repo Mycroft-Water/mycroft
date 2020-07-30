@@ -4,7 +4,6 @@ import schedule
 import time
 import threading
 
-import task
 sys.path.append('../')
 import mycroft.base as mc
 
@@ -16,7 +15,7 @@ class Trigger(mc.BaseDataObject):
     def listen(self):
         pass
 
-    def subscribe(self, subscriber: task.Task):
+    def subscribe(self, subscriber):
         self.subscribers.append(subscriber)
 
     def notify_subscribers(self):
