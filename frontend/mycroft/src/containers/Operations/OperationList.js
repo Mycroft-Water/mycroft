@@ -15,9 +15,12 @@ class OperationList extends Component {
       operations: [],
       new_operation_name: '',
       new_operation_type: 'Zoom',
-      new_operation_zoom_link: '',
+      new_operation_other_keys: [""],
+      new_operation_other_values: [""],
+      new_operation_custom_type: '',
     };
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
+    this.addFieldClickHandler = this.addFieldClickHandler.bind(this);
     this.operationDeleteClickHandler = this.operationDeleteClickHandler.bind(
       this
     );
@@ -36,6 +39,39 @@ class OperationList extends Component {
     const target = event.target;
     const name = target.name;
     const value = target.value;
+    if(this.state.new_operation_type === 'Custom') {
+      const id = target.id;
+      console.log("updating" + id);
+      if(name === "new_operation_key") {
+        this.setState(state => {
+          const new_operation_other_keys = state.new_operation_other_keys.map((item, index) => {
+            if (index === parseInt(id, 10) - 1) {
+              return value;
+            } else {
+              return item;
+            }
+          });
+     
+          return {
+            new_operation_other_keys,
+          };
+        });
+      } else {
+        this.setState(state => {
+          const new_operation_other_values = state.new_operation_other_values.map((item, index) => {
+            if (index === parseInt(id, 10) - 1) {
+              return value;
+            } else {
+              return item;
+            }
+          });
+     
+          return {
+            new_operation_other_values,
+          };
+        });
+      }
+    }
     this.setState({
       [name]: value,
     });
@@ -56,12 +92,17 @@ class OperationList extends Component {
   formSubmitHandler(event) {
     event.preventDefault();
     const operation_name = this.state.new_operation_name;
-    const operation_type = this.state.new_operation_type;
+    const operation_type = this.state.new_operation_type === "Custom" ? 
+      this.state.new_operation_custom_type : this.state.new_operation_type;
     let other_fields = {};
     if (operation_type === 'Zoom') {
       other_fields = { link: this.state.new_operation_zoom_link };
     } else if (operation_type === 'Open Slides') {
       other_fields = { path: this.state.new_operation_slides_path };
+    } else {
+      for(var i = 0; i < this.state.new_operation_other_keys.length; i++) {
+        other_fields[this.state.new_operation_other_keys[i]] = this.state.new_operation_other_values[i];
+      }
     }
     let operation_document = {
       name: operation_name,
@@ -75,6 +116,18 @@ class OperationList extends Component {
           operations: response.data.operations,
         });
       });
+    });
+  }
+
+  addFieldClickHandler(event) {
+    this.setState(state => {
+      const new_operation_other_keys = state.new_operation_other_keys.concat("");
+      const new_operation_other_values = state.new_operation_other_values.concat("");
+ 
+      return {
+        new_operation_other_keys,
+        new_operation_other_values,
+      };
     });
   }
 
@@ -107,6 +160,57 @@ class OperationList extends Component {
             value={this.state.new_operation_slides_path}
             onChange={this.inputChangeHandler}
           />
+        </Aux>
+      );
+    } else if (this.state.new_operation_type === 'Custom') {
+      return (
+        <Aux>
+          <Form.Control
+            type="text"
+            id="operation-custom-type"
+            name="new_operation_custom_type"
+            value={this.state.new_operation_custom_type}
+            placeholder="Type"
+            onChange={this.inputChangeHandler}
+          />
+          <Form.Label htmlFor="operation-slides-path" className="pt-4" id="others-label">
+            Attributes / Values
+          </Form.Label>
+          <div id="operation-others-key-box">
+          {this.state.new_operation_other_keys.map((key, index) => {
+            return (
+              <Aux>
+                <Form.Control
+                  type="text"
+                  id={index + 1}
+                  name="new_operation_key"
+                  value={key}
+                  placeholder="Attirbute Name"
+                  onChange={this.inputChangeHandler}
+                />
+              </Aux>
+            );
+          })}
+          </div>
+          <div id="operation-others-value-box">
+          {this.state.new_operation_other_values.map((value, index) => {
+            return (
+              <Aux>
+                <Form.Control
+                  type="text"
+                  id={index + 1}
+                  name="new_operation_value"
+                  value={value}
+                  placeholder="Value"
+                  onChange={this.inputChangeHandler}
+                />
+              </Aux>
+            );
+          })}
+          </div>
+          <button type="button" size="sm" onClick={this.addFieldClickHandler}>
+            Add
+          </button>
         </Aux>
       );
     }
@@ -174,6 +278,7 @@ class OperationList extends Component {
             >
               <option>Zoom</option>
               <option>Open Slides</option>
+              <option>Custom</option>
             </Form.Control>
             {other_fields}
           </Form.Group>
