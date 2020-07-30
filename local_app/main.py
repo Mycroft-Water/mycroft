@@ -1,10 +1,10 @@
-import os
 import requests
 import json
 
-from trigger import Trigger, ScheduleTrigger
-from operation import Operation, StartZoomLink
+from trigger import ScheduleTrigger
+from operation import StartZoomLink
 from task import Task
+
 
 class Main:
     def authenticate(self, username: str, password: str) -> bool:
@@ -29,10 +29,10 @@ class Main:
         parsed = json.loads(response.text)
         triggers_dict = parsed["triggers"]
         for t in triggers_dict:
-            if "type" not in t:
+            if "type" not in t or "name" not in t:
                 continue
             if t["type"] == "schedule":
-                self.triggers.append(ScheduleTrigger(**t))
+                self.triggers[t['name']] = ScheduleTrigger(**t)
         return True
 
     def get_operations(self) -> bool:
@@ -45,10 +45,10 @@ class Main:
         parsed = json.loads(response.text)
         operations_dict = parsed["operations"]
         for op in operations_dict:
-            if "type" not in op:
+            if "type" not in op or "name" not in op:
                 continue
             if op["type"] == "zoom":
-                self.operations.append(StartZoomLink(**op))
+                self.operations[op['name']] = StartZoomLink(**op)
         return True
 
     def get_tasks(self) -> bool:
@@ -61,22 +61,12 @@ class Main:
         parsed = json.loads(response.text)
         tasks_dict = parsed["tasks"]
         for task in tasks_dict:
-            if "triggers" not in task:
+            if "triggers" not in task or "operations" not in task:
                 continue
-            new_task = Task(**task)
-            for trigger_name in task["triggers"]:
-                for tgr in self.triggers:
-                    if tgr.name == trigger_name:
-                        tgr.subscribe(new_task)
-                        break
-            for operation_name in task["operations"]:
-                for op in self.operations:
-                    if op.name == operation_name:
-                        new_task.add_operation(op)
-                        break
+            new_task = Task(task, self.triggers, self.operations)
             self.tasks.append(new_task)
         return True
-    
+
     def __init__(self):
         self.url = "https://mycroft-water.herokuapp.com"
         success = False
@@ -84,15 +74,15 @@ class Main:
             username = input("Username: ")
             password = input("Password: ")
             success = self.authenticate(username, password)
-        self.triggers = []
+        self.triggers = {}
         self.get_triggers()
-        self.operations = []
+        self.operations = {}
         self.get_operations()
         self.tasks = []
         self.get_tasks()
         if not self.tasks or not self.operations or not self.tasks:
             return
-        for t in self.triggers:
+        for t in self.triggers.values():
             t.listen()
         print("Triggers started listening")
 

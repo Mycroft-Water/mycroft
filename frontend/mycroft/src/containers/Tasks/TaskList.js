@@ -120,7 +120,7 @@ class TaskList extends Component {
     const new_operation_id = String(this.state.new_operation_id);
     let new_operation = {
       id: new_operation_id,
-      name: new_operation_name,
+      operation: new_operation_name,
       sub_operations: [],
     };
     let new_task_operation_map = JSON.parse(
