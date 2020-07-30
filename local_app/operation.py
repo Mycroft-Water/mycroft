@@ -36,6 +36,22 @@ class StartZoomLink(Operation):
             self.set_params(link='https://zoom.us')
 
 
+class OpenLink(Operation):
+    def execute(self):
+        webbrowser.open(self.get_param('link'))
+
+    def __init__(self, name, **kwargs):
+        super().__init__(name, **kwargs)
+
+
+class PrintSomething(Operation):
+    def execute(self):
+        print(self.get_param('content'))
+
+    def __init__(self, name, **kwargs):
+        super().__init__(name, **kwargs)
+
+
 if __name__ == "__main__":
     zoom_op = StartZoomLink("op1", link="https://cmu.zoom.us/j/99411274169?pwd=R3AraFlQNkhxWjQrL0R0RUVvYmx2Zz09")
     zoom_op.execute()

@@ -1,8 +1,8 @@
 import requests
 import json
 
-from trigger import ScheduleTrigger
-from operation import StartZoomLink
+from trigger import ScheduleTrigger, KeyboardTrigger
+from operation import StartZoomLink, OpenLink, PrintSomething
 from task import Task
 
 
@@ -33,6 +33,8 @@ class Main:
                 continue
             if t["type"] == "schedule":
                 self.triggers[t['name']] = ScheduleTrigger(**t)
+            elif t['type'] == 'keyboard':
+                self.triggers[t['name']] = KeyboardTrigger(**t)
         return True
 
     def get_operations(self) -> bool:
@@ -49,6 +51,10 @@ class Main:
                 continue
             if op["type"] == "zoom":
                 self.operations[op['name']] = StartZoomLink(**op)
+            elif op["type"] == "link":
+                self.operations[op['name']] = OpenLink(**op)
+            elif op["type"] == "print":
+                self.operations[op['name']] = PrintSomething(**op)
         return True
 
     def get_tasks(self) -> bool:
