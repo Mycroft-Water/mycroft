@@ -6,6 +6,7 @@ import triggerApis from '../../apis/trigger-apis';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
+import './trigger.css';
 
 class TriggerList extends Component {
   constructor(props) {
@@ -117,6 +118,7 @@ class TriggerList extends Component {
               name="new_trigger_custom_type"
               value={this.state.new_trigger_custom_type}
               placeholder="Type"
+              className="mt-2"
               onChange={this.inputChangeHandler}
             />
             <Form.Label htmlFor="trigger-slides-path" className="pt-4" id="others-label">
@@ -131,7 +133,8 @@ class TriggerList extends Component {
                     id={index + 1}
                     name="new_trigger_key"
                     value={key}
-                    placeholder="Attirbute Name"
+                    className="mt-2"
+                    placeholder="Attribute Name"
                     onChange={this.inputChangeHandler}
                   />
                 </Aux>
@@ -147,6 +150,7 @@ class TriggerList extends Component {
                     id={index + 1}
                     name="new_trigger_value"
                     value={value}
+                    className="mt-2"
                     placeholder="Value"
                     onChange={this.inputChangeHandler}
                   />
@@ -154,7 +158,7 @@ class TriggerList extends Component {
               );
             })}
             </div>
-            <button type="button" size="sm" onClick={this.addFieldClickHandler}>
+            <button type="button" className="btn btn-primary btn-sm mt-2" onClick={this.addFieldClickHandler}>
               Add
             </button>
           </Aux>

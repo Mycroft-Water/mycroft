@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
+import './operation.css';
 
 class OperationList extends Component {
   constructor(props) {
@@ -171,6 +172,7 @@ class OperationList extends Component {
             name="new_operation_custom_type"
             value={this.state.new_operation_custom_type}
             placeholder="Type"
+            className="mt-2"
             onChange={this.inputChangeHandler}
           />
           <Form.Label htmlFor="operation-slides-path" className="pt-4" id="others-label">
@@ -185,7 +187,8 @@ class OperationList extends Component {
                   id={index + 1}
                   name="new_operation_key"
                   value={key}
-                  placeholder="Attirbute Name"
+                  className="mt-2"
+                  placeholder="Attribute Name"
                   onChange={this.inputChangeHandler}
                 />
               </Aux>
@@ -201,6 +204,7 @@ class OperationList extends Component {
                   id={index + 1}
                   name="new_operation_value"
                   value={value}
+                  className="mt-2"
                   placeholder="Value"
                   onChange={this.inputChangeHandler}
                 />
@@ -208,7 +212,7 @@ class OperationList extends Component {
             );
           })}
           </div>
-          <button type="button" size="sm" onClick={this.addFieldClickHandler}>
+          <button type="button" className="btn btn-primary btn-sm mt-2" onClick={this.addFieldClickHandler}>
             Add
           </button>
         </Aux>
